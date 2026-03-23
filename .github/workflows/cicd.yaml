@@ -39,18 +39,9 @@ jobs:
       - name: install argocd
         shell: bash
         run: |
-          ARCH=$(uname -m)
-          if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
-            FILE=argocd-linux-arm64
-          else
-            FILE=argocd-linux-amd64
-          fi
-
-          curl -k -sS -L -o argocd "https://argocd-server.argocd/${FILE}"
+          curl -k -sS -L -o argocd https://argocd-server.argocd/argocd-linux-arm64
           chmod +x argocd
           sudo mv argocd /usr/local/bin/argocd
-          argocd version --client
-
 
       - name: ArgoCD app sync
         shell: bash
