@@ -51,10 +51,18 @@ jobs:
         run: |
           echo "${{ needs.ci.outputs.commit_id }}"
           if ! command -v yq >/dev/null 2>&1; then
-            pip3 install yq --break-system-packages
+            ARCH=$(uname -m)
+            if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+              YQ_BIN=yq_linux_arm64
+            else
+              YQ_BIN=yq_linux_amd64
+            fi
+            curl -fsSL -o yq "https://github.com/mikefarah/yq/releases/download/v4.44.3/${YQ_BIN}"
+            chmod +x yq
+            sudo mv yq /usr/local/bin/yq
           fi
           yq --version
-          yq -yi '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-app/values.yaml
+          yq eval -i '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-app/values.yaml
       
       - name: commit changes
         uses: EndBug/add-and-commit@v9
