@@ -1,5 +1,8 @@
 name: cicd
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -51,7 +54,7 @@ jobs:
             pip3 install yq --break-system-packages
           fi
           yq --version
-          yq -Yi '.image.tag = "${{ needs.ci.outputs.commit_id }}"' chart/python-app/values.yaml
+          yq -yi '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-app/values.yaml
       
       - name: commit changes
         uses: EndBug/add-and-commit@v9
