@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: eweka/python-app
   pullPolicy: IfNotPresent
-  tag: c0566c
+  tag: 1b41f7
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
